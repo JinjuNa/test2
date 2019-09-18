@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Moving Numbers</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+</head>
+<body>
+    <div style="width:720px;height:400px;background-color:whitesmoke;">
+        <table style="margin-left:24px;">
+            <tr>
+                <td style="width:30%;text-align:right;height:24px;">
+                    Number Range:
+                </td>
+                <td colspan="2">
+                    <input type="number" id="startNum" class="start number"/><span style="margin:0px 8px 0px 8px;">~</span>
+                    <input type="number" max="20" id="endNum" class="end number" value="12"/>
+                    <button class="make list" id="listButton">Make List</button>
+                </td>
+            </tr>
+            <tr>
+                <td rowspan="2" style="height:calc(100% - 24px);">
+                    <select id="available" class="available" size="20" style="width:100%;background-color:lightgray;" disabled>
+
+                    </select>
+                </td>
+                <td style="width:30%;">
+                    <button class="move odd">Move one odd number</button>
+                </td>
+                <td style="width:30%;">
+                    <select id="oddList" class="odd" size="10" style="width:100%;"></select>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <button class="move even">Move one even number</button>
+                </td>
+                <td>
+                    <select id="evenList" class="even" size="10" style="width:100%;"></select>
+                </td>
+            </tr>
+        </table>
+    </div>
+</body>
+    <script>
+            var k = 0;
+            var t = 0;
+            var deleteOdd = 0;
+            var deleteEven = 0;
+            $("button.make.list").click(function () {
+                var startNum = document.getElementById('startNum').value;
+                var endNum = document.getElementById('endNum').value;
+                createList(startNum, endNum)
+            });
+            
+            $("button.move.odd").click(function () {
+                if(k - deleteEven < 0){
+                    k = 0;
+                }
+                if($('#available option:eq('+k+')').text() % 2 == 1){
+                    addOdd($("#available option:eq("+k+")").text())
+                    $("#available option:eq("+k+")").remove();
+                }else{
+                    addOdd($('#available option:eq('+(k+1)+')').text())
+                    $('#available option:eq('+(k+1)+')').remove();
+                }
+                k++
+                deleteOdd++
+            });
+            $("button.move.even").click(function () {
+                if(t - deleteOdd < 0){
+                    t = 0;
+                }
+                if($('#available option:eq('+t+')').text() % 2 == 0){
+                    addEven($("#available option:eq("+t+")").text())
+                    $("#available option:eq("+t+")").remove();
+                }else{
+                    addEven($('#available option:eq('+(t+1)+')').text())
+                    $('#available option:eq('+(t+1)+')').remove();
+                }
+                t++;
+                deleteEven++;                
+            });
+
+
+        function createList(a,b){
+        var list = document.getElementById("available")
+        var oddList = document.getElementById('oddList')
+        var evenList = document.getElementById('evenList')
+        k = 0;
+        t = 0;
+        list.innerHTML = '';
+        oddList.innerHTML = '';
+        evenList.innerHTML = '';
+        for(var i=a; i<parseInt(b)+1; i++){
+            var option = document.createElement('option')
+            option.innerHTML = i;
+            list.appendChild(option);
+        }
+    }
+
+        function addOdd(a){
+            var oddList = document.getElementById('oddList')
+            var oddOption = document.createElement('option')
+            oddOption.innerHTML = a
+            oddList.appendChild(oddOption)
+        }
+
+        function addEven(a){
+            var evenList = document.getElementById('evenList')
+            var evenOption = document.createElement('option')
+            evenOption.innerHTML = a
+            evenList.appendChild(evenOption)
+        }
+    </script>
+</html>
+
